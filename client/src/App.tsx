@@ -6,6 +6,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 
+// HashRouter implementation for GitHub Pages to avoid 404s on refresh
+// and simplify base path handling
+import { useHashLocation } from "wouter/use-hash-location";
+
 function AppRouter() {
   return (
     <Switch>
@@ -16,15 +20,12 @@ function AppRouter() {
 }
 
 function App() {
-  // We use the base path from Vite config in production
-  // or default to "/" in development
-  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
-        <Router base={base}>
+        {/* Use HashRouter for GitHub Pages compatibility */}
+        <Router hook={useHashLocation}>
           <AppRouter />
         </Router>
       </TooltipProvider>
